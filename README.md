@@ -13,7 +13,7 @@ rp2040で作る分割キーボード
 - 3Dプリント親指キーキャップ
 
 
-## 予定
+## 完成予定
 
 ![sss v7](https://github.com/xcd0/sss/assets/33729994/6e843bbf-9377-43de-a5ad-7c95e2e4f12b)
 
@@ -60,4 +60,35 @@ handwire予定だったが基板も作ることにした。choc対応をやめ�
 ### PCB
 ![image](https://github.com/xcd0/sss/assets/33729994/fdd18971-0574-4c9c-b05b-513c4f5dfe5d)
 
+## ファームウェア
+
+tinygoを使用している。
+
+Linuxはディストリビューションごとに方法があるので、<https://tinygo.org/getting-started/install/linux/>を参照。
+Macはhomebrewで入る模様。未確認。<https://tinygo.org/getting-started/install/macos/>
+
+windowsの場合、<https://tinygo.org/getting-started/install/windows/>にある通り、  
+[scoop](https://scoop.sh/)経由でコンパイラをインストールするのが良い。
+
+scoopはpowershellで下記のようにインストールできる。
+```pwsh
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+Invoke-RestMethod -Uri https://get.scoop.sh | Invoke-Expression
+```
+
+後は下記のコマンドで、
+
+```pwsh
+scoop install go
+scoop install tinygo
+scoop install make
+```
+でコンパイラとmakeをインストールし、
+
+```pwsh
+cd src
+make
+```
+
+でコンパイルできる。
 
