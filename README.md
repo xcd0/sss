@@ -60,7 +60,7 @@ handwire予定だったが基板も作ることにした。choc対応をやめ�
 ### PCB
 ![image](https://github.com/xcd0/sss/assets/33729994/fdd18971-0574-4c9c-b05b-513c4f5dfe5d)
 
-## ファームウェア
+## ファームウェアのビルド
 
 tinygoを使用している。
 
@@ -91,4 +91,20 @@ make
 ```
 
 でコンパイルできる。
+
+
+## ファームウェアの書き込み
+
+makefileに書いているため、
+
+```
+make flash
+```
+
+でビルドしつつ書き込むことができる。  
+windowsのwslでは書き込めないので注意。  
+powershellやmsysからも書き込める。  
+BOOTボタンを押しながら抜き差しする必要はない。  
+
+
 
