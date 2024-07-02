@@ -62,10 +62,10 @@ handwire予定だったが基板も作ることにした。choc対応をやめ�
 
 ## ファームウェアのビルド
 
-tinygoを使用している。
+[tinygo](https://tinygo.org/)と[tinygo-keyboard](https://github.com/sago35/tinygo-keyboard)を使用している。  
 
-Linuxはディストリビューションごとに方法があるので、<https://tinygo.org/getting-started/install/linux/>を参照。
-Macはhomebrewで入る模様。未確認。<https://tinygo.org/getting-started/install/macos/>
+Linuxはディストリビューションごとに方法があるので、<https://tinygo.org/getting-started/install/linux/>を参照。  
+Macはhomebrewで入る模様。未確認。<https://tinygo.org/getting-started/install/macos/>  
 
 windowsの場合、<https://tinygo.org/getting-started/install/windows/>にある通り、  
 [scoop](https://scoop.sh/)経由でコンパイラをインストールするのが良い。
