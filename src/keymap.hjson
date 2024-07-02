@@ -4,20 +4,55 @@ lang: jp
 
 # キーマップで使用するキーコードの短縮形定義
 define: {
+	ESC:  KeyEsc
+	TAB:  KeyTab
+	BS:   KeyBackspace
+	DEL:  KeyDelete
+	ENT:  KeyEnter
 	LSFT: KeyLeftShift
 	LCTL: KeyLeftCtrl
 	LALT: KeyLeftAlt
+	HENK: KeyHenkan
+	MHEN: KeyMuhenkan
+	COMM: KeyComma
+	DOT:  KeyPeriod
+	MINS: KeyMinus
+	SLSH: KeySlash
+	SCLN: KeySemicolon
+	COLN: KeyColon
+	HAT:  "KeyHat"    // ^
+	SPC:  KeySpace
+	LGUI: KeyWindows
+	BSL1: "KeyBackslash"   // \ |
+	BSL2: "KeyBackslash2"  // \ _
+	LBRC: KeyLeftBrace  // [
+	RBRC: KeyRightBrace // ]
+	LPRN: ""  // (
+	RPRN: ""  // )
+	LCBR: "" // {
+	RCBR: "" // }
+	MO_0: KeyMod0
+	MO_1: KeyMod1
+	MO_2: KeyMod2
+	MO_3: KeyMod3
+	MO_4: KeyMod4
+	MO_5: KeyMod5
+	TO_0: KeyTo0
+	TO_1: KeyTo1
+	TO_2: KeyTo2
+	TO_3: KeyTo3
+	TO_4: KeyTo4
+	TO_5: KeyTo5
 }
 
 # キーマップ
 # レイヤーごとに記述する。
 layout: [
 	[ # layer 0
-		KeyEsc,      Key1,        Key2,        Key3,        Key4,        Key5,        Key6,      Key7,        Key8,        Key9,        Key0,        KeyMinus,    KeyHat,        KeyBackslash,
-		KeyTab,      KeyQ,        KeyW,        KeyE,        KeyR,        KeyT,        KeyY,      KeyU,        KeyI,        KeyO,        KeyP,        KeyAt,       KeyLeftBrace,  KeyBackspace,
-		LCTL,        KeyA,        KeyS,        KeyD,        KeyF,        KeyG,        KeyH,      KeyJ,        KeyK,        KeyL,        KeySemicolon,KeyColon,    KeyRightBrace, KeyEnter,
-		LSFT,        KeyZ,        KeyX,        KeyC,        KeyV,        KeyB,        KeyN,      KeyM,        KeyComma,    KeyPeriod,   KeySlash,    KeyBackslash2,KeyUp,        KeyRightShift,
-		KeyMod1,     KeyHankaku,  KeyWindows,  LALT,        KeyMuhenkan, KeySpace,    KeySpace,  KeyHenkan,   KeyHiragana, KeyLeftAlt,  KeyMod1,     KeyLeft,     KeyDown,       KeyRight,
+		KeyQ, KeyW, KeyE, KeyR, KeyT, TAB,                  KeyY, KeyU, KeyI, KeyO, KeyP, KeyAt,       KeyLeftBrace,  KeyBackspace,
+		KeyA, KeyS, KeyD, KeyF, KeyG, MINS,                 KeyH, KeyJ, KeyK, KeyL, SCLN, COLN,
+		KeyZ, KeyX, KeyC, KeyV, KeyB, PIPE, MO_4,     MO_4, KeyN, KeyM, COMM, DOT,  SLSH, BSL2,
+		            MHEN, MO_1, SPC,  LSFT, ESC,      DEL,  BS,   ENT,  HENK
 	]
 	[ # layer 1
 		KeyEsc,      Key1,        Key2,        Key3,        Key4,        Key5,        Key6,      Key7,        Key8,        Key9,        Key0,        KeyMinus,    KeyHat,        KeyBackslash,
