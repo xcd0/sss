@@ -1,0 +1,115 @@
+{
+	"manufacturer": "xcd0",
+	"keyboard_name": "sss46",
+	"maintainer": "xcd0",
+	"url": "https://github.com/xcd0/sss46",
+	"usb": {
+		"device_version": "1.0.0",
+		"pid": "0x0000",
+		"vid": "0xFEED"
+	},
+	"bootloader": "rp2040",
+	"processor": "RP2040",
+	"diode_direction": "COL2ROW",
+	"features": {
+		"bootmagic": true,
+		"command": false,
+		"console": true,
+		"extrakey": true,
+		"mousekey": true,
+		"split_keyboard": true,
+		"encoder": true,
+		"encoder_map": true,
+		"via": true,
+		"nkro": true
+	},
+	"debounce": 5,
+	"boolmagic": { "enabled": true, "matrix": [0,0] },
+	"tapping": { "term": 200 },
+	"encoder":{
+		"enabled": true,
+		"rotary": [
+			{ "pin_a":"GP29", "pin_b":"GP28", "resolution": 4 }
+		]
+	},
+	"split": {
+		"enabled": true,
+		"soft_serial_pin": "GP16",
+		"transport": { "protocol": "serial" },
+		"bootmagic":{ "matrix": [0,0] },
+		"matrix_pins": {
+			"right": {
+				"cols": ["GP4", "GP5", "GP6", "GP7", "GP8", "GP17"],
+				"rows": ["GP0", "GP1", "GP2", "GP3"]
+			}
+		},
+		"encoder":{
+			"right": {
+				"rotary": [
+					{ "pin_a":"GP29", "pin_b":"GP28", "resolution": 4 }
+				]
+			}
+		}
+	},
+	"matrix_pins": {
+		"cols": ["GP4", "GP5", "GP6", "GP7", "GP8", "GP17"],
+		"rows": ["GP0", "GP1", "GP2", "GP3"]
+	},
+	"layouts": {
+		"LAYOUT": {
+			"layout": [
+				{ "matrix": [0,0], "label": "0,0", "x":0, "y":0},
+				{ "matrix": [0,1], "label": "0,1", "x":1, "y":0},
+				{ "matrix": [0,2], "label": "0,2", "x":2, "y":0},
+				{ "matrix": [0,3], "label": "0,3", "x":3, "y":0},
+				{ "matrix": [0,4], "label": "0,4", "x":4, "y":0},
+				{ "matrix": [0,5], "label": "0,5", "x":5, "y":0},
+				{ "matrix": [4,0], "label": "4,0", "x":11, "y":0},
+				{ "matrix": [4,0], "label": "4,0", "x":12, "y":0},
+				{ "matrix": [4,0], "label": "4,0", "x":13, "y":0},
+				{ "matrix": [4,0], "label": "4,0", "x":14, "y":0},
+				{ "matrix": [4,0], "label": "4,0", "x":15, "y":0},
+				{ "matrix": [4,0], "label": "4,0", "x":16, "y":0},
+				{ "matrix": [1,0], "label": "1,0", "x":0, "y":1},
+				{ "matrix": [1,1], "label": "1,1", "x":1, "y":1},
+				{ "matrix": [1,2], "label": "1,2", "x":2, "y":1},
+				{ "matrix": [1,3], "label": "1,3", "x":3, "y":1},
+				{ "matrix": [1,4], "label": "1,4", "x":4, "y":1},
+				{ "matrix": [1,5], "label": "1,5", "x":5, "y":1},
+				{ "matrix": [5,0], "label": "5,0", "x":11, "y":1},
+				{ "matrix": [5,0], "label": "5,0", "x":12, "y":1},
+				{ "matrix": [5,0], "label": "5,0", "x":13, "y":1},
+				{ "matrix": [5,0], "label": "5,0", "x":14, "y":1},
+				{ "matrix": [5,0], "label": "5,0", "x":15, "y":1},
+				{ "matrix": [5,0], "label": "5,0", "x":16, "y":1},
+				{ "matrix": [0,1], "label": "0,1", "x":7.25, "y":1.25},
+				{ "matrix": [1,1], "label": "1,1", "x":8.75, "y":1.25},
+				{ "matrix": [3,5], "label": "3,5", "x":6.25, "y":1.75},
+				{ "matrix": [7,5], "label": "7,5", "x":9.75, "y":1.75},
+				{ "matrix": [2,0], "label": "2,0", "x":0, "y":2},
+				{ "matrix": [2,1], "label": "2,1", "x":1, "y":2},
+				{ "matrix": [2,2], "label": "2,2", "x":2, "y":2},
+				{ "matrix": [2,3], "label": "2,3", "x":3, "y":2},
+				{ "matrix": [2,4], "label": "2,4", "x":4, "y":2},
+				{ "matrix": [2,5], "label": "2,5", "x":5, "y":2},
+				{ "matrix": [6,0], "label": "6,0", "x":11, "y":2},
+				{ "matrix": [6,0], "label": "6,0", "x":12, "y":2},
+				{ "matrix": [6,0], "label": "6,0", "x":13, "y":2},
+				{ "matrix": [6,0], "label": "6,0", "x":14, "y":2},
+				{ "matrix": [6,0], "label": "6,0", "x":15, "y":2},
+				{ "matrix": [6,0], "label": "6,0", "x":16, "y":2},
+				{ "matrix": [0,0], "label": "0,0", "x":7.25, "y":2.25},
+				{ "matrix": [1,0], "label": "1,0", "x":8.75, "y":2.25},
+				{ "matrix": [3,0], "label": "3,0", "x":2, "y":3},
+				{ "matrix": [3,1], "label": "3,1", "x":3, "y":3},
+				{ "matrix": [3,2], "label": "3,2", "x":4, "y":3},
+				{ "matrix": [3,3], "label": "3,3", "x":5, "y":3},
+				{ "matrix": [3,4], "label": "3,4", "x":6, "y":3},
+				{ "matrix": [7,0], "label": "7,0", "x":10, "y":3},
+				{ "matrix": [7,0], "label": "7,0", "x":11, "y":3},
+				{ "matrix": [7,0], "label": "7,0", "x":12, "y":3},
+				{ "matrix": [7,0], "label": "7,0", "x":13, "y":3},
+				{ "matrix": [7,0], "label": "7,0", "x":14, "y":3}]
+		}
+	}
+}
