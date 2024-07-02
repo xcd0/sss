@@ -12,8 +12,9 @@ import (
 
 // KeymapLoaded は、HJSONファイルから読み込まれたキーマップデータを表す構造体です。
 type KeymapLoaded struct {
-	Lang   string     `json:"lang"`
-	Keymap [][]string `json:"layout"`
+	Lang   string            `json:"lang"`
+	Define map[string]string `json:"define"`
+	Keymap [][]string        `json:"layout"`
 }
 
 // templateText は、生成されるGoコードのテンプレートを定義します。
@@ -41,6 +42,9 @@ func main() {
 
 	hjsonPath := os.Args[1]
 	km := loadKeymap(hjsonPath)
+
+	// defineセクションに基づいてキーマップを置換
+	km = applyDefines(km)
 
 	// キーマップコードを生成し、ファイルに書き込みます。
 	output := generateGoCode(km)
@@ -78,6 +82,23 @@ func loadKeymap(path string) KeymapLoaded {
 	err = json.Unmarshal(jsonBytes, &km)
 	if err != nil {
 		panic(fmt.Sprintf("Error unmarshalling JSON to struct: %v", err))
+	}
+	return km
+}
+
+// applyDefines は、defineセクションに基づいてキーマップ内の値を置換します。
+func applyDefines(km KeymapLoaded) KeymapLoaded {
+	for i, layer := range km.Keymap {
+		for j, row := range layer {
+			keys := strings.Split(row, ",")
+			for k, key := range keys {
+				key = strings.TrimSpace(key)
+				if replacement, exists := km.Define[key]; exists {
+					keys[k] = replacement
+				}
+			}
+			km.Keymap[i][j] = strings.Join(keys, ", ")
+		}
 	}
 	return km
 }

@@ -1,11 +1,23 @@
+
+# キーマップで使用する言語
 lang: jp
+
+# キーマップで使用するキーコードの短縮形定義
+define: {
+	LSFT: KeyLeftShift
+	LCTL: KeyLeftCtrl
+	LALT: KeyLeftAlt
+}
+
+# キーマップ
+# レイヤーごとに記述する。
 layout: [
 	[ # layer 0
 		KeyEsc,      Key1,        Key2,        Key3,        Key4,        Key5,        Key6,      Key7,        Key8,        Key9,        Key0,        KeyMinus,    KeyHat,        KeyBackslash,
 		KeyTab,      KeyQ,        KeyW,        KeyE,        KeyR,        KeyT,        KeyY,      KeyU,        KeyI,        KeyO,        KeyP,        KeyAt,       KeyLeftBrace,  KeyBackspace,
-		KeyLeftCtrl, KeyA,        KeyS,        KeyD,        KeyF,        KeyG,        KeyH,      KeyJ,        KeyK,        KeyL,        KeySemicolon,KeyColon,    KeyRightBrace, KeyEnter,
-		KeyLeftShift,KeyZ,        KeyX,        KeyC,        KeyV,        KeyB,        KeyN,      KeyM,        KeyComma,    KeyPeriod,   KeySlash,    KeyBackslash2,KeyUp,        KeyRightShift,
-		KeyMod1,     KeyHankaku,  KeyWindows,  KeyLeftAlt,  KeyMuhenkan, KeySpace,    KeySpace,  KeyHenkan,   KeyHiragana, KeyLeftAlt,  KeyMod1,     KeyLeft,     KeyDown,       KeyRight,
+		LCTL,        KeyA,        KeyS,        KeyD,        KeyF,        KeyG,        KeyH,      KeyJ,        KeyK,        KeyL,        KeySemicolon,KeyColon,    KeyRightBrace, KeyEnter,
+		LSFT,        KeyZ,        KeyX,        KeyC,        KeyV,        KeyB,        KeyN,      KeyM,        KeyComma,    KeyPeriod,   KeySlash,    KeyBackslash2,KeyUp,        KeyRightShift,
+		KeyMod1,     KeyHankaku,  KeyWindows,  LALT,        KeyMuhenkan, KeySpace,    KeySpace,  KeyHenkan,   KeyHiragana, KeyLeftAlt,  KeyMod1,     KeyLeft,     KeyDown,       KeyRight,
 	]
 	[ # layer 1
 		KeyEsc,      Key1,        Key2,        Key3,        Key4,        Key5,        Key6,      Key7,        Key8,        Key9,        Key0,        KeyMinus,    KeyHat,        KeyBackslash,

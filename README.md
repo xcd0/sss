@@ -107,4 +107,38 @@ powershellやmsysからも書き込める。
 BOOTボタンを押しながら抜き差しする必要はない。  
 
 
+## キーマップ
+
+goのソースコードに定義するとgofmtでフォーマットされて整列した状態を保てないため、  
+[hjson形式](https://hjson.github.io/)で記述し、それをビルド前に解釈してキーマップを返す関数を自動生成するようにしている。  
+<./src/script/prebuild/prebuild.go>にビルド前に実行されるコードがある。  
+
+- キーマップ内のキーコードは<https://github.com/sago35/tinygo-keyboard/tree/main/keycodes>にあるものを使用する。  
+- `lang`に定義した言語を表す文字列がそのままpackage名として使用される。まあ現状jpしかないけれども。  
+- 短縮表現を`define`に定義できるようにした。
+- `layout`にはレイヤーごとにキーコードを記載する。
+	- これは単純に、`[][]string`として読み込まれ、`,`と`\n`区切りの単純な`[][][]string`に解釈される。
+
+```hjson
+# キーマップで使用する言語
+lang: jp
+
+# キーマップで使用するキーコードの短縮形定義
+define: {
+	LSFT: KeyLeftShift
+	LCTL: KeyLeftCtrl
+	LALT: KeyLeftAlt
+}
+
+# キーマップ
+# レイヤーごとに記述する。
+layout: [
+	[ # layer 0
+		KeyEsc,      Key1,        Key2,        Key3,        Key4,        Key5,        Key6,      Key7,        Key8,        Key9,        Key0,        KeyMinus,    KeyHat,        KeyBackslash,
+		KeyTab,      KeyQ,        KeyW,        KeyE,        KeyR,        KeyT,        KeyY,      KeyU,        KeyI,        KeyO,        KeyP,        KeyAt,       KeyLeftBrace,  KeyBackspace,
+		LCTL,        KeyA,        KeyS,        KeyD,        KeyF,        KeyG,        KeyH,      KeyJ,        KeyK,        KeyL,        KeySemicolon,KeyColon,    KeyRightBrace, KeyEnter,
+		LSFT,        KeyZ,        KeyX,        KeyC,        KeyV,        KeyB,        KeyN,      KeyM,        KeyComma,    KeyPeriod,   KeySlash,    KeyBackslash2,KeyUp,        KeyRightShift,
+		KeyMod1,     KeyHankaku,  KeyWindows,  LALT,        KeyMuhenkan, KeySpace,    KeySpace,  KeyHenkan,   KeyHiragana, KeyLeftAlt,  KeyMod1,     KeyLeft,     KeyDown,       KeyRight,
+	]
+```
 
