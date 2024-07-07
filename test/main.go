@@ -2,53 +2,47 @@ package main
 
 import (
 	"context"
-	_ "embed"
-	"log"
 	"machine"
 	"machine/usb"
+	"time"
 
-	keyboard "github.com/sago35/tinygo-keyboard"
-	"github.com/sago35/tinygo-keyboard/keycodes/jp"
+	//keyboard "github.com/sago35/tinygo-keyboard"
+	//"github.com/sago35/tinygo-keyboard/keycodes/jp"
+	keyboard "github.com/xcd0/tinygo-keyboard"
+	"github.com/xcd0/tinygo-keyboard/keycodes/jp"
 )
 
-func main() {
-	usb.Product = "xxxx-0.1.0"
+var (
+	gpioPin []machine.Pin
+)
 
-	err := run()
-	if err != nil {
-		log.Fatal(err)
+func init() {
+	usb.Product = "test-0.0.1"
+
+	// 全てのGPIOをスライスとしてアクセスできるようにしておく。
+	gpioPin = []machine.Pin{
+		machine.GPIO0, machine.GPIO1, machine.GPIO2, machine.GPIO3, machine.GPIO4, machine.GPIO5, machine.GPIO6, machine.GPIO7, machine.GPIO8, machine.GPIO9,
+		machine.GPIO10, machine.GPIO11, machine.GPIO12, machine.GPIO13, machine.GPIO14, machine.GPIO15, machine.GPIO16, machine.GPIO17, machine.GPIO18, machine.GPIO19,
+		machine.GPIO20, machine.GPIO21, machine.GPIO22, machine.GPIO23, machine.GPIO24, machine.GPIO25, machine.GPIO26, machine.GPIO27, machine.GPIO28, machine.GPIO29,
 	}
 }
 
-func run() error {
-
+func main() {
 	d := keyboard.New()
 
-	col1 := machine.GPIO0
-	col2 := machine.GPIO1
-	row1 := machine.GPIO2
-	row2 := machine.GPIO3
+	col := gpioPin[0:2]
+	row := gpioPin[2:4]
 
-	colPins := []machine.Pin{
-		col1,
-		col2,
-	}
-
-	rowPins := []machine.Pin{
-		row1,
-		row2,
-	}
-
-	d.AddMatrixKeyboard(colPins, rowPins, [][]keyboard.Keycode{
-		{
-			jp.KeyT, jp.KeyI,
-			jp.KeyY, jp.KeyG,
+	d.AddMatrixKeyboard(
+		col, row, [][]keyboard.Keycode{
+			{
+				jp.KeyA, jp.KeyB,
+				jp.KeyC, jp.KeyD,
+			},
 		},
-	})
+		//keyboard.MatrixScanPeriod(750*time.Microsecond),
+		keyboard.MatrixScanPeriod(760*time.Nanosecond),
+	)
 
-	// for Vial
-	//loadKeyboardDef()
-
-	//d.Debug = true
-	return d.Loop(context.Background())
+	d.Loop(context.Background())
 }

@@ -3,7 +3,9 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"os"
+	"regexp"
 	"strings"
 	"text/template"
 
@@ -13,8 +15,8 @@ import (
 // KeymapLoaded は、HJSONファイルから読み込まれたキーマップデータを表す構造体です。
 type KeymapLoaded struct {
 	Lang   string            `json:"lang"`
-	Define map[string]string `json:"define"`
 	Keymap [][]string        `json:"layout"`
+	Define map[string]string `json:"define"`
 }
 
 // templateText は、生成されるGoコードのテンプレートを定義します。
@@ -24,8 +26,10 @@ const templateText = `// Code generated generated_keymap.go DO NOT EDIT.
 package main
 
 import (
-	keyboard "github.com/sago35/tinygo-keyboard"
-	"github.com/sago35/tinygo-keyboard/keycodes/{{.Lang}}"
+	//keyboard "github.com/sago35/tinygo-keyboard"
+	//"github.com/sago35/tinygo-keyboard/keycodes/{{.Lang}}"
+	keyboard "github.com/xcd0/tinygo-keyboard"
+	"github.com/xcd0/tinygo-keyboard/keycodes/{{.Lang}}"
 )
 
 func GetKeycodes() [][]keyboard.Keycode {
@@ -43,7 +47,26 @@ func main() {
 	hjsonPath := os.Args[1]
 	km := loadKeymap(hjsonPath)
 
-	// defineセクションに基づいてキーマップを置換
+	{ // 解析前処理。
+		// Defineから空白を削除する。
+		// またコメント//#以降を削除する。
+		for i, _ := range km.Define {
+			km.Define[i] = DeleteSpace(km.Define[i])
+			km.Define[i] = reComment.ReplaceAllString(km.Define[i], "")
+			//log.Printf("define:%v:%v", i, km.Define[i])
+		}
+		// キーマップから空白を削除し、行末に,をつける。すでにある場合削除する。
+		for i, _ := range km.Keymap {
+			for j, _ := range km.Keymap[i] {
+				km.Keymap[i][j] = DeleteSpace(km.Keymap[i][j])
+				km.Keymap[i][j] = strings.TrimRight(km.Keymap[i][j], ",") + ","
+				//log.Printf("%v,%v:%v", i, j, km.Keymap[i][j])
+			}
+		}
+	}
+	//log.Printf("%#v", km.Keymap)
+
+	// defineセクションに基づいてキーマップを置換する。
 	km = applyDefines(km)
 
 	// キーマップコードを生成し、ファイルに書き込みます。
@@ -53,7 +76,89 @@ func main() {
 		panic(fmt.Sprintf("Error writing to file: %v", err))
 	}
 
-	fmt.Println("Keymap generated successfully!")
+	fmt.Println("generated_keymap.go generated successfully!")
+}
+
+// generateKeymapCode は、KeymapLoaded構造体からキーマップコードを生成します。
+func generateKeymapCode(km KeymapLoaded) string {
+	var sb strings.Builder
+	outputComma := func(key string) {
+		//log.Printf("key:%v", key)
+		sb.WriteString(",")
+	}
+	for _, layer := range km.Keymap {
+		sb.WriteString("\t\t{\n")
+		for r, row := range layer {
+			sb.WriteString("\t\t\t")
+			row = DeleteSpace(row)
+			keys := strings.Split(row, ",")
+			for i, key := range keys {
+				//key = strings.TrimSpace(key)
+				if len(key) != 0 {
+					//log.Printf("key:%v", key)
+					if i != 0 {
+						outputComma(key)
+					}
+					if key == "0" {
+						sb.WriteString("0")
+					} else if key[0] == '#' {
+						// #で始まる場合数値として解釈する
+						sb.WriteString(fmt.Sprintf("%s", key))
+					} else if strings.Contains(key, "|") { // |がある場合解釈して書きだす。
+						// PIPE: "@KeyBackslash | KeyLeftShift"   // |
+						// UNDS: "@KeyBackslash2 | KeyLeftShift"  // _
+						// は
+						// jp.KeyBackslash | jp.KeyLeftShift
+						// jp.KeyBackslash2 | jp.KeyLeftShift
+						// のように解釈する。
+						//UNDS: "KeyBackslash2 | KeyLeftShift"  // _
+						c := strings.Split(key, "|")
+						//log.Printf("keys:%#v", c)
+						log.Printf("c:%#v", fmt.Sprintf("%s.%s", km.Lang, c[0]))
+						for i, _ := range c {
+							if i == 0 {
+								sb.WriteString(fmt.Sprintf("%s.%s", km.Lang, c[i]))
+							} else if len(c[i]) > 0 {
+								sb.WriteString(fmt.Sprintf("|%s.%s", km.Lang, c[i]))
+								//log.Printf("c:%#v", fmt.Sprintf("%s.%s", km.Lang, c[i]))
+							}
+						}
+					} else {
+						// そのまま出力する。
+						sb.WriteString(fmt.Sprintf("%s.%s", km.Lang, key))
+					}
+					if i == len(keys)-1 {
+						// レイヤーの末尾で最後に,がない場合ここに来る
+						// hjson上で末尾に,がある場合は次のループで空の要素になる。
+						sb.WriteString(fmt.Sprintf("%s.%s", km.Lang, key))
+					}
+				} else {
+					if i == len(keys)-1 {
+						// hjson上で末尾に,がある場合は次のループで空の要素になる。
+					}
+					// 何もしない。
+				}
+			}
+			if r < len(layer)-1 {
+				sb.WriteString(",\n")
+				// 行末
+				//log.Printf("key:#1")
+			} else {
+				// 行末かつレイヤーの最後
+				outputComma("#2")
+			}
+			//log.Printf("---")
+		}
+		sb.WriteString("\n\t\t},\n")
+	}
+	return sb.String()
+}
+
+var reComment *regexp.Regexp = regexp.MustCompile(`(//|#).*`)
+var reSpace *regexp.Regexp = regexp.MustCompile(`\s+`)
+
+func DeleteSpace(str string) string {
+	return reSpace.ReplaceAllString(str, "")
 }
 
 // loadKeymap は、指定されたパスのHJSONファイルを読み込み、KeymapLoaded構造体に変換します。
@@ -125,36 +230,4 @@ func generateGoCode(km KeymapLoaded) string {
 		panic(fmt.Sprintf("Error executing template: %v", err))
 	}
 	return buf.String()
-}
-
-// generateKeymapCode は、KeymapLoaded構造体からキーマップコードを生成します。
-func generateKeymapCode(km KeymapLoaded) string {
-	var sb strings.Builder
-	for _, layer := range km.Keymap {
-		sb.WriteString("\t\t{\n")
-		for _, row := range layer {
-			sb.WriteString("\t\t\t")
-			keys := strings.Split(row, ",")
-			for i, key := range keys {
-				key = strings.TrimSpace(key)
-				if len(key) != 0 {
-					if key == "0" {
-						sb.WriteString("0")
-					} else {
-						sb.WriteString(fmt.Sprintf("%s.%s", km.Lang, key))
-					}
-					if i < len(keys)-1 {
-						sb.WriteString(", ")
-					} else {
-						sb.WriteString(fmt.Sprintf("%s.%s", km.Lang, key))
-					}
-				} else {
-					// 何もしない。
-				}
-			}
-			sb.WriteString("\n")
-		}
-		sb.WriteString("\t\t},\n")
-	}
-	return sb.String()
 }

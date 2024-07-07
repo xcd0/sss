@@ -4,8 +4,8 @@
 	"productId": "0x000a",
 	"lighting": "none",
 	"matrix": {
-		"rows": 9,
-		"cols": 6
+		"cols": 6,
+		"rows": 4
 	},
 	"layouts": {
 		"keymap": [
